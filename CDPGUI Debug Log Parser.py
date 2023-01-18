@@ -44,10 +44,10 @@ for log_file in log_files:
                     "subsystem":"N/A",
                     "component":"N/A",
                     "action":"N/A",
-                    "message":"N/A",
+                    "other":"N/A",
                 }
                 if pattern == pattern4:
-                    log_entry["message"] = match.group(4)
+                    log_entry["action"] = match.group(4)
                 else:
                     log_entry["subsystem"] = match.group(4)
                 if len(match.groups()) >= 5:
