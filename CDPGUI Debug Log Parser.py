@@ -22,9 +22,9 @@ pattern1 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(\d+)\] \[(\w+)\] (\
 pattern2 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(\d+)\] \[(\w+)\] (\w+) (\w+/\w+/\w+/\w+): (.*)"
 pattern3 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(\d+)\] \[(\w+)\] (\w+[\w\s]+) ([\w\/]+): (.*)"
 pattern4 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(\d+)\] \[(\w+)\] (.*)"
-pattern5 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+): (\w+): (\w+)"
 
-patterns = [pattern1, pattern2, pattern3, pattern4, pattern5]
+
+patterns = [pattern1, pattern2, pattern3, pattern4]
 
 # Open the log file
 for log_file in log_files:
@@ -55,17 +55,15 @@ for log_file in log_files:
                 if len(match.groups()) >= 6: 
                     log_entry["action"] = match.group(6)
                 if len(match.groups()) >= 7:
-                    log_entry["message"] = match.group(7)
-                if pattern == pattern1:
+                    log_entry["other"] = match.group(7)
+                """ if pattern == pattern1:
                     log_entry["Pattern"] = "Pattern1"
                 if pattern == pattern2:
                     log_entry["Pattern"] = "Pattern2"
                 if pattern == pattern3:
                     log_entry["Pattern"] = "Pattern3"
                 if pattern == pattern4:
-                    log_entry["Pattern"] = "Pattern4"
-                if pattern == pattern5:
-                    log_entry["Pattern"] = "Pattern4"
+                    log_entry["Pattern"] = "Pattern4" """
                 
                 log_entries.append(log_entry)
             else:
@@ -78,8 +76,8 @@ for entry in log_entries:
     output_string += "\n"
     output_string += json.dumps(entry, indent=4)
     output_string += ","
-output_string += "}"
-output_string += "]"
+output_string += "]]"
+
 
 output_string = output_string[:-2]  # remove the trailing comma and newline
 
