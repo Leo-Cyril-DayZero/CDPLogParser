@@ -19,11 +19,12 @@ unmatched_entries = []
 
 # Define the patterns for the different log formats
 pattern1 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(\d+)\] \[(\w+)\] (\w+[\w\s]+) ([\w\/]+): (\w+[\w\s]+): (.*)"
-pattern2 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+): (\w+): (\w+)"
+pattern2 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(\d+)\] \[(\w+)\] (\w+) (\w+/\w+/\w+/\w+): (.*)"
 pattern3 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(\d+)\] \[(\w+)\] (\w+[\w\s]+) ([\w\/]+): (.*)"
 pattern4 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \[(\d+)\] \[(\w+)\] (.*)"
+pattern5 = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) (\w+): (\w+): (\w+)"
 
-patterns = [pattern1, pattern2, pattern3, pattern4]
+patterns = [pattern1, pattern2, pattern3, pattern4, pattern5]
 
 # Open the log file
 for log_file in log_files:
@@ -49,13 +50,23 @@ for log_file in log_files:
                     log_entry["message"] = match.group(4)
                 else:
                     log_entry["subsystem"] = match.group(4)
-                if len(match.groups()) == 5:
+                if len(match.groups()) >= 5:
                     log_entry["component"] = match.group(5)
+                if len(match.groups()) >= 6: 
                     log_entry["action"] = match.group(6)
-                if len(match.groups()) == 7:
-                    log_entry["component"] = match.group(5)
-                    log_entry["action"] = match.group(6)
+                if len(match.groups()) >= 7:
                     log_entry["message"] = match.group(7)
+                if pattern == pattern1:
+                    log_entry["Pattern"] = "Pattern1"
+                if pattern == pattern2:
+                    log_entry["Pattern"] = "Pattern2"
+                if pattern == pattern3:
+                    log_entry["Pattern"] = "Pattern3"
+                if pattern == pattern4:
+                    log_entry["Pattern"] = "Pattern4"
+                if pattern == pattern5:
+                    log_entry["Pattern"] = "Pattern4"
+                
                 log_entries.append(log_entry)
             else:
                 unmatched_entries.append(line)
